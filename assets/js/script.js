@@ -265,7 +265,7 @@ function displayNewSearch(cityName) {
 
     if (!isExistingSearch(cityName, searchHistoryList)) {
         searchHistoryList.innerHTML +=
-            `<li class="list-group-item search-entry" data-city-name="${cityName}">${cityName}</li>`;
+            `<li class="list-group-item search-entry" id="his" data-city-name="${cityName}">${cityName}</li>`;
     }
 };
 
