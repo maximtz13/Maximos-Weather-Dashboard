@@ -113,6 +113,7 @@ const API_KEY = '4e700b938e7abb20c0a4650d77ff125e';
 
 function startWeatherData(cityName) {
     if(!isCurrentlyDisplayed(cityName)) {
+        debugger
         fetchData(curWeatherURL(cityName), procCurWeatherData);
     }
 };
