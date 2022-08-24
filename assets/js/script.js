@@ -109,11 +109,10 @@ function getUserInput() {
     return userInput;
 }
 
-const API_KEY = '4e700b938e7abb20c0a4650d77ff125e';
+const API_KEY = 'a033a2c841a0c9e354ab4e4c2deaabd1';
 
 function startWeatherData(cityName) {
     if(!isCurrentlyDisplayed(cityName)) {
-        debugger
         fetchData(curWeatherURL(cityName), procCurWeatherData);
     }
 };
@@ -189,9 +188,9 @@ function dispOverview(currentDay, cityName) {
     `<div class="row mb-4">
     <div class="col">
       <div class="card" id="display-info">
-        <div class="card-body">
-          <div class="card-body" id="city-info" data-city="${cityName}">
-            <h2 class="d-inline-block mr-3">${cityName} ${formatDate(currentDay.date)}</h2>
+        <div class="card-body p-0">
+          <div class="card-body pt-0" id="city-info" data-city="${cityName}">
+            <h2 class="d-inline-block mr-3 font-weight-bold">${cityName} ${formatDate(currentDay.date)}</h2>
             <img class="d-inline-block" src="https://openweathermap.org/img/wn/${currentDay.icon.name}@2x.png" alt="${currentDay.icon.description}">
             <p>Temperature: ${currentDay.temp} &#176;F</p>
             <p>Humidity: ${currentDay.humidity}&#37;</p>
