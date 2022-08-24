@@ -25,7 +25,18 @@
 
         <!--Body of Page-->
         <div>
-
+            <div class="row" id="dashboard">
+                <div class="col col-lg-3 py-3" id="search-bar">
+                    <form class="form-group" id="search-city">
+                        <label for="city-name" class="h2 font-weight-bold">Search for a City:</label>
+                        <div>
+                            <input type="text" class="form-control w-75 mb-3" id="city-name">
+                            <button type="submit" class="btn btn-primary w-75" id="search">Search</button>
+                        </div>
+                        <p class="text-danger" id="error"></p>
+                    </form>
+                </div>
+            </div>
         </div>
     </main>
 

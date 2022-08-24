@@ -1,3 +1,14 @@
 #colorful-bg {
-    background-image: linear-gradient(90deg, #3580bd, #1a0840)
+    background-image: linear-gradient(90deg, #3580bd, #1a0840);
+    font-size: 10px;
+}
+
+#search {
+    background-color: #4daae3;
+    font-size: 20px;
+    border-style: none;
+}
+
+#search:hover {
+    background-color: #0c63f0;
 }
