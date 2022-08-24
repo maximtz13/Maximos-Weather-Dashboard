@@ -102,7 +102,22 @@ WeatherData.prototype.setDays = function (dayList) {
         }
     }.bind(this));
     return this;
-}
+};
+
+window.onload = function () {
+    const localWeatherObj = getWeatherObj();
+    if (localWeatherObj) {
+        displayInfo(localWeatherObj);
+    }
+};
+
+function submitSearch(event) {
+    event.preventDefault();
+
+    if (event.target.matches('.search-entry')) {
+        startWeatherData(event.target.dataset.cityName);
+    }
+};
 
 function submitSearch(event) {
     event.preventDefault();
@@ -165,6 +180,7 @@ function procOneCallData(data, weatherData) {
     weatherObj.setDays(data.daily);
 
     displayInfo(weatherObj);
+    saveWeatherObj(weatherObj);
 }
 
 function curWeatherURL(cityName) {
@@ -186,7 +202,7 @@ function displayInfo(weatherObj) {
     resetCityInfo(weatherObj.city.cityName);
     dispOverview(weatherObj.currentDay, weatherObj.city.cityName);
     displayFiveDay(weatherObj.nextFiveDays);
-
+    displayNewSearch(weatherObj.city.cityName);
 };
 
 function resetCityInfo(cityName) {
@@ -244,6 +260,25 @@ function displayFiveDay(dayList) {
     }
 };
 
+function displayNewSearch(cityName) {
+    const searchHistoryList = document.getElementById('search-history');
+
+    if (!isExistingSearch(cityName, searchHistoryList)) {
+        searchHistoryList.innerHTML +=
+            `<li class="list-group-item search-entry" data-city-name="${cityName}">${cityName}</li>`;
+    }
+};
+
+function isExistingSearch(cityName, searchHistoryList) {
+    const searchHistoryItems = searchHistoryList.children;
+    for (item of searchHistoryItems) {
+        if (item.dataset.cityName === cityName) {
+            return true;
+        }
+    }
+    return false;
+};
+
 function isCurrentlyDisplayed(cityName) {
     const currentDis = document.getElementById('city-info').dataset.city;
     return currentDis === cityName ? true : false;
@@ -257,6 +292,15 @@ function formatDate(date) {
 function formatDate2(date) {
     const newDate = new Date(date);
     return `${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`;
+};
+
+function saveWeatherObj(weatherObj) {
+    localStorage.setItem('weatherObj', JSON.stringify(weatherObj));
+};
+
+function getWeatherObj() {
+    let weatherObj = localStorage.getItem('weatherObj');
+    return weatherObj ? JSON.parse(weatherObj) : null;
 };
 
 document.getElementById('search-city').addEventListener('submit', submitSearch);
