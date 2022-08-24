@@ -13,3 +13,7 @@
     background-color: #0c63f0;
 }
 
+#thick {
+    border-top: 2px solid gray;
+    border-radius: 20px;
+}
