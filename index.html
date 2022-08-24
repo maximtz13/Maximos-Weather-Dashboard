@@ -24,29 +24,28 @@
         </header>
 
         <!--Body of Page-->
-        <div>
-            <div class="row" id="dashboard">
-                <!--Search For City-->
-                <div class="col col-lg-3 py-3" id="search-bar">
-                    <form class="form-group" id="search-city">
-                        <label for="city-name" class="h2 font-weight-bold">Search for a City:</label>
-                        <div>
-                            <input type="text" class="form-control w-75 mb-3" id="city-name" placeholder="Enter City Here" >
-                            <button type="submit" class="btn btn-primary w-75" id="search">Search</button>
-                        </div>
-                        <p class="text-danger" id="error"></p>
-                    </form>
-                    <!--Seach History-->
+        <div class="row" id="dashboard">
+            <!--Search For City-->
+            <div class="col col-lg-2 col-md-12 py-3" id="search-bar">
+                <form class="form-group" id="search-city">
+                    <label for="city-name" class="h2 font-weight-bold">Search for a City:</label>
                     <div>
-                        <ul class="list-group list-group-flush" id="search-history">
+                        <input type="text" class="form-control w-100 mb-3" id="city-name" placeholder="Enter City Here">
+                        <button type="submit" class="btn btn-primary w-100 " id="search">Search</button>
+                    </div>
+                    <p class="text-danger" id="error"></p>
+                </form>
+                <!--Seach History-->
+                <div>
+                    <ul class="list-group list-group-flush" id="search-history">
 
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
-                <div class="col-lg-9 py-3" id="city-info" data-city="">
-                    <div class="w-100 h-100 d-flex" id="start-text">
-                        <h2 class="m-auto text-center font-weight-normal"><em>Enter a City Name to view<br>weather information.</em></h2>
-                    </div>
+            </div>
+            <div class="col-lg-9 py-3" id="city-info" data-city="">
+                <div class="w-100 h-100 d-flex" id="start-text">
+                    <h2 class="m-auto text-center font-weight-normal"><em>Enter a City Name to view<br>weather
+                            information.</em></h2>
                 </div>
             </div>
         </div>
