@@ -111,7 +111,7 @@ window.onload = function () {
     }
 };
 
-function submitSearch(event) {
+function submitSearchHistoryEntry(event) {
     event.preventDefault();
 
     if (event.target.matches('.search-entry')) {
@@ -247,7 +247,7 @@ function displayFiveDay(dayList) {
     const fiveDayForecastCards = document.getElementById('five-day-forecast-cards');
     for (day of dayList) {
         fiveDayForecastCards.innerHTML +=
-            `<div class="col-lg" id="five-day-weather-card">
+            `<div class="col-lg flex-nowrap" id="five-day-weather-card">
         <div class="card bg-primary text-white">
           <div class="card-body d-flex flex-column justify-content-center align-items-center">
             <p class="h5">${formatDate2(day.date)}</p>
@@ -304,3 +304,4 @@ function getWeatherObj() {
 };
 
 document.getElementById('search-city').addEventListener('submit', submitSearch);
+document.getElementById('search-history').addEventListener('click', submitSearchHistoryEntry);
