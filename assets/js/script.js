@@ -83,5 +83,53 @@ function getUserInput() {
 
 const API_KEY = '4e700b938e7abb20c0a4650d77ff125e';
 
+function startWeatherData(cityName) {
+    if(!isCurrentlyDisplayed(cityName)) {
+        fetchData(curWeatherURL(cityName), procCurWeatherData);
+    }
+};
+
+function fetchData(queryURL, nextAction) {
+    fetch(queryURL)
+    .then(function (response) {
+        return response.json();
+    }).then(nextAction);
+};
+
+function procCurWeatherData(data) {
+    if (data.cod != 200) {
+    } else {
+        const weatherData = new WeatherData(
+            data.name,
+            data.coord.lat,
+            data.coord.lon);
+        const currentDay = new CurrentWeather(
+            data.main.temp,
+            data.main.humidity,
+            data.wind.speed)
+            .setDate(data.dt)
+            .setIconName(data.weather[0].icon)
+            .setIconDescription(data.weather[0].description);
+        weatherData.setCurrentDay(currentDay);
+
+        fetchData(oneCallURL(data.coord.lat, data.coord.lon), function (data) {
+            procOneCallData(data, weatherData);
+        });
+    }
+};
+
+function procOneCallData(data, weatherData) {
+    const weatherObj = weatherData;
+    weatherObj.setDays(data.daily);
+
+    displayInformation(weatherObj);
+}
+
+function curWeatherURL(cityName) {
+    return 'https://api.openweathermap.org/data/2.5/weather?'
+        + `q=${cityName}`
+        + `&units=imperial`
+        + `&appid=${API_KEY}`;
+};
 
 document.getElementById('search-city').addEventListener('submit', submitSearch);
