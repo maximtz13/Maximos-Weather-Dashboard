@@ -70,6 +70,7 @@ class WeatherData {
     }
 
     currentDay;
+    nextFiveDays = [];
 
     constructor(cityName, lat, lon) {
         this.city.cityName = cityName;
@@ -80,12 +81,24 @@ class WeatherData {
     setCurrentDay(currentDay) {
         this.currentDay = currentDay;
     }
+
+    appendFiveDays(day) {
+        this.nextFiveDays.push(day);
+    }
 };
 
 WeatherData.prototype.setDays = function (dayList) {
-    dayList.forEach(function(day, index) {
+    dayList.forEach(function (day, index) {
         if (index === 0) {
             this.currentDay.setUV(day.uvi);
+        } else if (index <= 5) {
+            let nextFiveDay = new CityWeather(
+                day.temp.day,
+                day.humidity)
+                .setDate(day.dt)
+                .setIconName(day.weather[0].icon)
+                .setIconDescription(day.weather[0].description);
+            this.appendFiveDays(nextFiveDay);
         }
     }.bind(this));
     return this;
@@ -95,7 +108,7 @@ function submitSearch(event) {
     event.preventDefault();
 
     const userInput = getUserInput();
-    
+
     if (userInput) {
         startWeatherData(userInput);
     } else {
@@ -112,21 +125,21 @@ function getUserInput() {
 const API_KEY = 'a033a2c841a0c9e354ab4e4c2deaabd1';
 
 function startWeatherData(cityName) {
-    if(!isCurrentlyDisplayed(cityName)) {
+    if (!isCurrentlyDisplayed(cityName)) {
         fetchData(curWeatherURL(cityName), procCurWeatherData);
     }
 };
 
 function fetchData(queryURL, nextAction) {
     fetch(queryURL)
-    .then(function (response) {
-        return response.json();
-    }).then(nextAction);
+        .then(function (response) {
+            return response.json();
+        }).then(nextAction);
 };
 
 function procCurWeatherData(data) {
     if (data.cod != 200) {
-        
+
     } else {
         const weatherData = new WeatherData(
             data.name,
@@ -172,6 +185,8 @@ function oneCallURL(lat, lon) {
 function displayInfo(weatherObj) {
     resetCityInfo(weatherObj.city.cityName);
     dispOverview(weatherObj.currentDay, weatherObj.city.cityName);
+    displayFiveDay(weatherObj.nextFiveDays);
+
 };
 
 function resetCityInfo(cityName) {
@@ -185,7 +200,7 @@ function dispOverview(currentDay, cityName) {
     const cityInfo = document.getElementById('city-info');
 
     cityInfo.innerHTML +=
-    `<div class="row mb-4">
+        `<div class="row mb-4">
     <div class="col">
       <div class="card" id="display-info">
         <div class="card-body p-0">
@@ -203,6 +218,32 @@ function dispOverview(currentDay, cityName) {
   </div>`;
 };
 
+function displayFiveDay(dayList) {
+    const cityInfo = document.getElementById('city-info');
+    cityInfo.innerHTML +=
+        `<div class="row">
+      <div class="col">
+        <h3>5-Day Forecast:</h3>
+          <div class="row" id="five-day-forecast-cards">
+          </div>
+        </div>
+      </div>`;
+    const fiveDayForecastCards = document.getElementById('five-day-forecast-cards');
+    for (day of dayList) {
+        fiveDayForecastCards.innerHTML +=
+            `<div class="col-lg" id="five-day-weather-card">
+        <div class="card bg-primary text-white">
+          <div class="card-body d-flex flex-column justify-content-center align-items-center">
+            <p class="h5">${formatDate2(day.date)}</p>
+            <img class="mb-3" src="https://openweathermap.org/img/wn/${day.icon.name}@2x.png" alt="${day.icon.description}">
+            <p>Temp: ${day.temp} &#176;F</p>
+            <p>Humidity: ${day.humidity}&#37;</p>
+          </div>
+        </div>
+      </div>`;
+    }
+};
+
 function isCurrentlyDisplayed(cityName) {
     const currentDis = document.getElementById('city-info').dataset.city;
     return currentDis === cityName ? true : false;
@@ -213,5 +254,9 @@ function formatDate(date) {
     return `(${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()})`;
 };
 
+function formatDate2(date) {
+    const newDate = new Date(date);
+    return `${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`;
+};
 
 document.getElementById('search-city').addEventListener('submit', submitSearch);
